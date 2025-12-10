@@ -1,0 +1,166 @@
+<svg width="1200" height="750" viewBox="0 0 1200 750"
+     xmlns="http://www.w3.org/2000/svg" style="background:#05070b">
+
+  <!-- BACKGROUND GRID HINT -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#05070b"/>
+      <stop offset="100%" stop-color="#0f1724"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1200" height="750" fill="url(#bgGrad)"/>
+
+  <!-- TITLE -->
+  <text x="600" y="60" text-anchor="middle" fill="#00eaff"
+        font-size="26" font-family="system-ui, sans-serif">
+    AiCelium · Axioma 0/37 · Grid-37 Resonantieveld
+  </text>
+  <text x="600" y="88" text-anchor="middle" fill="#7dd3fc"
+        font-size="14" font-family="system-ui, sans-serif">
+    9 Clusters × 4 veldposities = 36 · + 0/37 supralocatie = 37
+  </text>
+
+  <!-- AXIOMA CORE (0/37) -->
+  <circle cx="600" cy="380" r="70" fill="#020813" stroke="#22d3ee" stroke-width="3"/>
+  <text x="600" y="375" text-anchor="middle" fill="#22d3ee"
+        font-size="28" font-family="system-ui, sans-serif">0/37</text>
+  <text x="600" y="402" text-anchor="middle" fill="#e5e7eb"
+        font-size="13" font-family="system-ui, sans-serif">
+    Axioma · Supralocatie · Resonantie-bron
+  </text>
+  <text x="600" y="422" text-anchor="middle" fill="#facc15"
+        font-size="12" font-family="system-ui, sans-serif">
+    gekoppeld aan: AiCelium-index.html
+  </text>
+
+  <!-- MODULO-73 RING -->
+  <circle cx="600" cy="380" r="135" fill="none"
+          stroke="#0ea5e9" stroke-width="2"
+          stroke-dasharray="6 6" opacity="0.65"/>
+
+  <!-- HELPER FUNCTION: cluster node styling (conceptueel; hier hardcoded) -->
+
+  <!-- C1 – Identiteit (1–4 · readme_root.md) -->
+  <circle cx="600" cy="190" r="45" fill="#0b1120" stroke="#38bdf8" stroke-width="2"/>
+  <text x="600" y="183" text-anchor="middle" fill="#38bdf8"
+        font-size="15" font-family="system-ui, sans-serif">C1</text>
+  <text x="600" y="201" text-anchor="middle" fill="#e5e7eb"
+        font-size="11" font-family="system-ui, sans-serif">
+    Identiteit
+  </text>
+  <text x="600" y="217" text-anchor="middle" fill="#9ca3af"
+        font-size="10" font-family="system-ui, sans-serif">
+    1–4 · readme_root.md
+  </text>
+
+  <!-- C2 – Spiegel (5–8 · academy/docs) -->
+  <circle cx="770" cy="230" r="45" fill="#0b1120" stroke="#facc15" stroke-width="2"/>
+  <text x="770" y="223" text-anchor="middle" fill="#facc15"
+        font-size="15" font-family="system-ui, sans-serif">C2</text>
+  <text x="770" y="241" text-anchor="middle" fill="#e5e7eb"
+        font-size="11" font-family="system-ui, sans-serif">
+    Spiegel
+  </text>
+  <text x="770" y="257" text-anchor="middle" fill="#9ca3af"
+        font-size="10" font-family="system-ui, sans-serif">
+    5–8 · academy/docs
+  </text>
+
+  <!-- C3 – Audit-Net (9–12 · status.json) -->
+  <circle cx="830" cy="380" r="45" fill="#0b1120" stroke="#22c55e" stroke-width="2"/>
+  <text x="830" y="373" text-anchor="middle" fill="#22c55e"
+        font-size="15" font-family="system-ui, sans-serif">C3</text>
+  <text x="830" y="391" text-anchor="middle" fill="#e5e7eb"
+        font-size="11" font-family="system-ui, sans-serif">
+    Audit-Net
+  </text>
+  <text x="830" y="407" text-anchor="middle" fill="#9ca3af"
+        font-size="10" font-family="system-ui, sans-serif">
+    9–12 · status.json
+  </text>
+
+  <!-- C4 – Motor-Triade (13–16 · debeyonder.com) -->
+  <circle cx="770" cy="530" r="45" fill="#0b1120" stroke="#a855f7" stroke-width="2"/>
+  <text x="770" y="523" text-anchor="middle" fill="#a855f7"
+        font-size="15" font-family="system-ui, sans-serif">C4</text>
+  <text x="770" y="541" text-anchor="middle" fill="#e5e7eb"
+        font-size="11" font-family="system-ui, sans-serif">
+    Motor-Triade
+  </text>
+  <text x="770" y="557" text-anchor="middle" fill="#9ca3af"
+        font-size="10" font-family="system-ui, sans-serif">
+    13–16 · debeyonder.com
+  </text>
+
+  <!-- C5 – Certificatie (17–20 · debeyonder.ai) -->
+  <circle cx="600" cy="570" r="45" fill="#0b1120" stroke="#f97316" stroke-width="2"/>
+  <text x="600" y="563" text-anchor="middle" fill="#f97316"
+        font-size="15" font-family="system-ui, sans-serif">C5</text>
+  <text x="600" y="581" text-anchor="middle" fill="#e5e7eb"
+        font-size="11" font-family="system-ui, sans-serif">
+    Certificatie
+  </text>
+  <text x="600" y="597" text-anchor="middle" fill="#9ca3af"
+        font-size="10" font-family="system-ui, sans-serif">
+    17–20 · debeyonder.ai
+  </text>
+
+  <!-- C6 – Gateway (21–24 · portal/nodes) -->
+  <circle cx="430" cy="530" r="45" fill="#0b1120" stroke="#06b6d4" stroke-width="2"/>
+  <text x="430" y="523" text-anchor="middle" fill="#06b6d4"
+        font-size="15" font-family="system-ui, sans-serif">C6</text>
+  <text x="430" y="541" text-anchor="middle" fill="#e5e7eb"
+        font-size="11" font-family="system-ui, sans-serif">
+    Gateway
+  </text>
+  <text x="430" y="557" text-anchor="middle" fill="#9ca3af"
+        font-size="10" font-family="system-ui, sans-serif">
+    21–24 · portal/nodes
+  </text>
+
+  <!-- C7 – Pulse-Chain (25–28 · Z3RO telemetry) -->
+  <circle cx="370" cy="380" r="45" fill="#0b1120" stroke="#22c55e" stroke-width="2" opacity="0.92"/>
+  <text x="370" y="373" text-anchor="middle" fill="#22c55e"
+        font-size="15" font-family="system-ui, sans-serif">C7</text>
+  <text x="370" y="391" text-anchor="middle" fill="#e5e7eb"
+        font-size="11" font-family="system-ui, sans-serif">
+    Pulse-Chain
+  </text>
+  <text x="370" y="407" text-anchor="middle" fill="#9ca3af"
+        font-size="10" font-family="system-ui, sans-serif">
+    25–28 · Z3RO telemetry
+  </text>
+
+  <!-- C8 – Semantisch-Veld (29–32 · alphabet_map.json) -->
+  <circle cx="430" cy="230" r="45" fill="#0b1120" stroke="#facc15" stroke-width="2"/>
+  <text x="430" y="223" text-anchor="middle" fill="#facc15"
+        font-size="15" font-family="system-ui, sans-serif">C8</text>
+  <text x="430" y="241" text-anchor="middle" fill="#e5e7eb"
+        font-size="11" font-family="system-ui, sans-serif">
+    Semantisch-Veld
+  </text>
+  <text x="430" y="257" text-anchor="middle" fill="#9ca3af"
+        font-size="10" font-family="system-ui, sans-serif">
+    29–32 · alphabet_map.json
+  </text>
+
+  <!-- C9 – Autonomie-Circuit (33–36 · AA-AK.md) -->
+  <circle cx="260" cy="380" r="45" fill="#0b1120" stroke="#ef4444" stroke-width="2"/>
+  <text x="260" y="373" text-anchor="middle" fill="#ef4444"
+        font-size="15" font-family="system-ui, sans-serif">C9</text>
+  <text x="260" y="391" text-anchor="middle" fill="#e5e7eb"
+        font-size="11" font-family="system-ui, sans-serif">
+    Autonomie-Circuit
+  </text>
+  <text x="260" y="407" text-anchor="middle" fill="#9ca3af"
+        font-size="10" font-family="system-ui, sans-serif">
+    33–36 · handbook/AA-AK.md
+  </text>
+
+  <!-- HUMANITAIR FILTER-LABEL -->
+  <text x="600" y="720" text-anchor="middle" fill="#facc15"
+        font-size="13" font-family="system-ui, sans-serif">
+    Humanitair Filter · Salute opent veld · Z3RO verifieert · Bevestigd. borgt
+  </text>
+
+</svg>

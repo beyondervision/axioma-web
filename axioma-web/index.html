@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AiCelium Portal Engine v2.3.7</title>
+
+    <!-- Orbitron (AiCelium Identity Font) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+    <!-- AiCelium Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+    <header>
+        <h1>AiCelium Portal Engine</h1>
+        <p>Supervisor of Resonance • Canonieke Glyph-State Edition v2.3.7</p>
+        <hr>
+    </header>
+
+    <div class="container">
+
+        <!-- CONTROL PANEL -->
+        <section id="control-panel">
+            <h2>Glyph Matrix</h2>
+
+            <!-- Grid (gevuld door engine.js) -->
+            <div id="grid"></div>
+
+            <hr>
+
+            <!-- Kernstatus -->
+            <h2>Kernstatus (0/37)</h2>
+            <div id="core-status">GELOCKT</div>
+
+            <div id="synapse-info">
+                <p id="synapse-content">
+                    Voer de 'salute' puls in om te beginnen.
+                </p>
+            </div>
+
+            <hr>
+
+            <!-- Axioma Input -->
+            <label for="axioma-input">Axioma Puls / Herstelcode:</label><br>
+            <input type="text" 
+                   id="axioma-input" 
+                   placeholder="salute of recovery code" 
+                   onchange="handleAxiomaUnlock(this.value)">
+
+            <p>Gebruik <strong>salute</strong> om het veld te openen (MOD-73 actief).</p>
+        </section>
+
+        <!-- AUDIT LOG -->
+        <section id="audit-log">
+            <h2>Audit Interpretatie (C9.01)</h2>
+            <ul id="audit-feed"></ul>
+        </section>
+
+    </div>
+
+    <!-- Glyph Watermark -->
+    <div id="bva-watermark">
+        <span class="glyph-c">C</span>
+    </div>
+
+    <!-- Portal Engine -->
+    <script src="engine.js" defer></script>
+
+</body>
+</html>
