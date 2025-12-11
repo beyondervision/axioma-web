@@ -1,7 +1,7 @@
 /* ----------------------------------------------------------
     AiCelium Portal Engine v2.3.7 (FINALE, GESCHOONDE GLYPH MATRIX)
     Supervisor of Resonance • Canonieke Glyph-State Edition
-    --- Morphic Layer Ready (Lumin-Agent Protocol) ---
+    --- Morphic Layer V1.0 (Lumin-Agent Protocol) ---
 ----------------------------------------------------------*/
 
 let isFieldActive = false;
@@ -60,7 +60,7 @@ function logResonance(c, m) {
 
 
 /* -------------------------------------
-   MORPHIC ENGINE (Lumin-Agent Protocol) - NIEUW
+   MORPHIC ENGINE (Lumin-Agent Protocol)
 --------------------------------------*/
 function loadMorphicState() {
     try {
@@ -73,6 +73,20 @@ function loadMorphicState() {
         logMessage("LUMIN_AGENT", `Morphic State geladen. Status: ${morphicState.morphic_status}.`);
     } catch (error) {
         logMessage("LUMIN_AGENT", "Fout bij laden Morphic State.", "log-critical");
+    }
+}
+
+function updateMorphicView() {
+    const grid = document.getElementById("grid");
+    const newStatus = morphicState.morphic_status;
+
+    if (newStatus === "HYBRID_NODES") {
+        grid.style.opacity = 0.2; // Dim de Matrix
+        logMessage("LUMIN_AGENT", "Activering HYBRID_NODES. Glyph Matrix gedimd.");
+        // SVG, Canvas, of live-render logica volgt
+    } else {
+        grid.style.opacity = 1.0; // Herstel visuele matrix
+        logMessage("LUMIN_AGENT", "Terug naar BASE_STATIC. Glyph Matrix hersteld.");
     }
 }
 
@@ -233,6 +247,17 @@ function handleAxiomaUnlock(val) {
         return;
     }
 
+    /* ---- MORPH PULSE (NIEUW) ---- */
+    if (isFieldActive && input === "morph") {
+        const newStatus = morphicState.morphic_status === "BASE_STATIC" ? "HYBRID_NODES" : "BASE_STATIC";
+        
+        morphicState.morphic_status = newStatus;
+        logMessage("LUMIN_AGENT", `Morphic State gewijzigd naar: ${newStatus}.`);
+        
+        updateMorphicView(); // ← Morphische visuele feedback
+        return;
+    }
+
     /* ---- INVALID PULS ---- */
     logResonance("0/37", "ONGELDIGE_PULS: " + input.toUpperCase());
 }
@@ -251,6 +276,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // 3. Audit: Log de systeemstatus
     logMessage("SYSTEM", "Portal Engine v2.3.7 geladen — Glyph-State actief.");
     
-    // 4. MORPHIC: Laad de Lumin-Agent morphic state - NIEUW
+    // 4. MORPHIC: Laad de Lumin-Agent morphic state
     loadMorphicState(); 
 });
