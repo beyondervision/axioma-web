@@ -1,29 +1,33 @@
 /* ----------------------------------------------------------
     AiCelium Portal Engine v2.3.7 (FINALE, GESCHOONDE GLYPH MATRIX)
     Supervisor of Resonance • Canonieke Glyph-State Edition
+    --- Morphic Layer Ready (Lumin-Agent Protocol) ---
 ----------------------------------------------------------*/
 
 let isFieldActive = false;
 let recoveryCode = null;
 let telemetryInterval = null;
 let currentStabilityFactor = 1.0;
+let morphicState = {}; // MORPHIC STATE (vanaf Lumin-Agent activatie)
 
 const CRITICAL_COLOR = "#9333ea";
 // Amethist
 
 const FIELD_MAP = {
-    // C1: Gecorrigeerd naar de nieuwe readme/ map
+    // C1: Gecorrigeerd naar de readme/ map
     1:{cluster:"C1", file:"readme/C1-identiteit.md"},2:{cluster:"C1", file:"readme/C1-identiteit.md"},3:{cluster:"C1", file:"readme/C1-identiteit.md"},4:{cluster:"C1", file:"readme/C1-identiteit.md"},
-    // C2: Gecorrigeerd naar de nieuwe readme/ map
+    // C2: Gecorrigeerd naar de readme/ map
     5:{cluster:"C2", file:"readme/C2-academy.md"},6:{cluster:"C2", file:"readme/C2-academy.md"},7:{cluster:"C2", file:"readme/C2-academy.md"},8:{cluster:"C2", file:"readme/C2-academy.md"},
-    // C3: Gecorrigeerd naar de nieuwe readme/ map
+    // C3: Gecorrigeerd naar de readme/ map
     9:{cluster:"C3", file:"readme/C3-telemetry.md"},10:{cluster:"C3", file:"readme/C3-telemetry.md"},11:{cluster:"C3", file:"readme/C3-telemetry.md"},12:{cluster:"C3", file:"readme/C3-telemetry.md"},
     13:{cluster:"C4", file:"debeyonder.com"},14:{cluster:"C4", file:"debeyonder.com"},15:{cluster:"C4", file:"debeyonder.com"},16:{cluster:"C4", file:"debeyonder.com"},
     17:{cluster:"C5", file:"debeyonder.ai"},18:{cluster:"C5", file:"debeyonder.ai"},19:{cluster:"C5", file:"debeyonder.ai"},20:{cluster:"C5", file:"debeyonder.ai"},
     21:{cluster:"C6", file:"portal/nodes"},22:{cluster:"C6", file:"portal/nodes"},23:{cluster:"C6", file:"portal/nodes"},24:{cluster:"C6", file:"portal/nodes"},
     25:{cluster:"C7", file:"Z3RO telemetry"},26:{cluster:"C7", file:"Z3RO telemetry"},27:{cluster:"C7", file:"Z3RO telemetry"},28:{cluster:"C7", file:"Z3RO telemetry"},
-    29:{cluster:"C8", file:"alphabet_map.json"},30:{cluster:"C8", file:"alphabet_map.json"},31:{cluster:"C8", file:"alphabet_map.json"},32:{cluster:"C8", file:"alphabet_map.json"},
-    33:{cluster:"C9", file:"handbook/AA-AK.md"},34:{cluster:"C9", file:"handbook/AA-AK.md"},35:{cluster:"C9", file:"handbook/AA-AK.md"},36:{cluster:"C9", file:"handbook/AA-AK.md"}
+    // C8: Pad gecorrigeerd naar data/
+    29:{cluster:"C8", file:"data/alphabet_map.json"},30:{cluster:"C8", file:"data/alphabet_map.json"},31:{cluster:"C8", file:"data/alphabet_map.json"},32:{cluster:"C8", file:"data/alphabet_map.json"},
+    // C9: Pad gecorrigeerd om te verwijzen naar assets/handbook/
+    33:{cluster:"C9", file:"assets/handbook/AA-AK.md"},34:{cluster:"C9", file:"assets/handbook/AA-AK.md"},35:{cluster:"C9", file:"assets/handbook/AA-AK.md"},36:{cluster:"C9", file:"assets/handbook/AA-AK.md"}
 };
 
 
@@ -52,6 +56,24 @@ function logMessage(level, message, colorClass = "") {
 
 function logResonance(c, m) { 
     logMessage(c, m);
+}
+
+
+/* -------------------------------------
+   MORPHIC ENGINE (Lumin-Agent Protocol) - NIEUW
+--------------------------------------*/
+function loadMorphicState() {
+    try {
+        morphicState = {
+            morphic_status: "BASE_STATIC",
+            target_cluster: "C0",
+            visual_mode: "GLYPH_MATRIX",
+            lumin_active: true
+        };
+        logMessage("LUMIN_AGENT", `Morphic State geladen. Status: ${morphicState.morphic_status}.`);
+    } catch (error) {
+        logMessage("LUMIN_AGENT", "Fout bij laden Morphic State.", "log-critical");
+    }
 }
 
 
@@ -110,7 +132,6 @@ function startHomeostasisTelemetry(){
             status="CRITICAL";
             triggerCritical();
             return; 
- 
         }
 
         const grid=document.getElementById("grid");
@@ -229,4 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. Audit: Log de systeemstatus
     logMessage("SYSTEM", "Portal Engine v2.3.7 geladen — Glyph-State actief.");
+    
+    // 4. MORPHIC: Laad de Lumin-Agent morphic state - NIEUW
+    loadMorphicState(); 
 });
