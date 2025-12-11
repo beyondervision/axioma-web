@@ -1,79 +1,91 @@
-from pathlib import Path
+/* ----------------------------------------------------------
+   AiCelium Portal • StyleSheet v2.4 (PRO • VIVID MODE)
+   Canonieke Fixes: Lay-out, Vivid Mode, Amethist Protocol
+-----------------------------------------------------------*/
 
-# CSS content to be saved
-css_content = """
+/* GLOBAL */
+:root {
+    --bg: #06090d;
+    --panel: #0d1117;
+    --panel-border: #1e293b;
+    --text: #e2e8f0;
+    --line: #00eaff;    /* Cyaan gloei */
+    --accent: #facc15;  /* Goud */
+    --critical: #9333ea; /* Amethist */
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Orbitron', sans-serif;
+    margin: 0;
+    padding: 20px;
+    /* Opmaak voor de grid/audit in de body */
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* ----------------------------------------------------------
+   GRID (6x6) • Glyph Matrix LAYOUT FIX
+-----------------------------------------------------------*/
 #grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr); /* 6 kolommen */
-  gap: 8px;
-  margin-bottom: 1rem;
-  opacity: 0.6;
-  transition: opacity 0.8s ease-in-out;
-}
-
-#grid.critical-border {
-  border: 2px dashed #9333ea; /* Amethist */
-  padding: 4px;
-  animation: pulse 1.5s infinite;
-}
-
-#grid.resonant {
-  opacity: 1;
+    width: 100%;
+    max-width: 380px; /* Canonieke grootte */
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 1rem;
+    border: 2px solid #0d1117;
 }
 
 .glyph-cell {
-  aspect-ratio: 1 / 1; /* Vierkante cellen */
-  background-color: #1e293b;
-  color: #cbd5e1;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #334155;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+    /* 🔑 FIX 1: Dwingt een vierkant af voor uniforme grootte */
+    aspect-ratio: 1 / 1; 
+    min-width: 50px;
+    min-height: 50px;
+
+    /* 🔑 FIX 2: Centreert de tekst en zorgt voor verticale stapeling */
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    line-height: 1.1; 
+    font-size: 0.8rem;
+    font-family: 'Orbitron', sans-serif;
+
+    background: #1e293b; /* Fallback Grijs (nog steeds grijs fout) */
+    border: 1px solid #334155;
+    text-align: center;
+    color: #cbd5e1;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background .5s, box-shadow .5s, filter .5s;
+    filter: grayscale(1);
 }
 
 .glyph-cell:hover {
-  background-color: #0ea5e9;
-  color: #f0f9ff;
+    background: #334155;
 }
 
-.glyph-cell.active {
-  background-color: #38bdf8;
-  color: #0f172a;
+/* Zorg dat de Glyph (de letter in het midden) groter is */
+.glyph-cell .cell-glyph {
+    font-size: 1.2rem;
+    font-weight: 700;
 }
 
-#audit-log {
-  background: #0f172a;
-  padding: 1rem;
-  border: 1px solid #334155;
-  font-family: monospace;
-  color: #f8fafc;
-  max-height: 200px;
-  overflow-y: auto;
+/* Critical Border (Amethist Protocol) */
+.critical-border {
+    border: 3px solid var(--critical) !important;
+    box-shadow: 0 0 12px var(--critical);
 }
 
-#audit-log li {
-  font-size: 13px;
-  margin-bottom: 4px;
-}
+/* ----------------------------------------------------------
+   CLUSTER COLORS (VIVID MODE) — MOETEN WERKEN!
+-----------------------------------------------------------*/
 
-@keyframes pulse {
-  0%, 100% {
-    border-color: #9333ea;
-  }
-  50% {
-    border-color: #facc15;
-  }
-}
-"""
-
-# Save to /mnt/data/style.css for download
-output_path = Path("/mnt/data/style.css")
-output_path.write_text(css_content, encoding="utf-8")
-output_path.name
+.c1 { background-color: #0ea5e9; border-color:
