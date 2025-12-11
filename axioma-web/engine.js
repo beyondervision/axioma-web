@@ -1,5 +1,6 @@
 /* ----------------------------------------------------------
-   MORPHIC VISUAL ARCHIVES (V2.1) — Embedded SVG Constants
+   AiCelium Portal Engine v2.4 | VISUALS (Morphic Data Layer)
+   ARCHIEF: SVG_GRID_37 & SVG_PORTAL_HYBRID
 ----------------------------------------------------------*/
 
 const SVG_GRID_37 = `<svg width="1200" height="750" viewBox="0 0 1200 750"
@@ -154,6 +155,7 @@ const SVG_GRID_37 = `<svg width="1200" height="750" viewBox="0 0 1200 750"
   </text>
 
 </svg>`;
+
 const SVG_PORTAL_HYBRID = `<svg width="1200" height="700" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
 
   <rect width="1200" height="700" fill="#0d0f14"/>
@@ -188,3 +190,5 @@ const SVG_PORTAL_HYBRID = `<svg width="1200" height="700" viewBox="0 0 1200 700"
   <text x="350" y="25" fill="#ffd300" font-size="14" text-anchor="middle">Humanitair — Axioma</text>
 
 </svg>`;
+
+// ... rest of engine.js code (omitted for brevity)
