@@ -1,62 +1,98 @@
 from pathlib import Path
 
-# Herstel pad en naam voor HTML-bestand
-output_path = Path("/mnt/data/index-AiCelium-v2.4-Morphic.html")
-
-# HTML-inhoud opnieuw definiëren
-html_content = """<!DOCTYPE html>
+# HTML content for the AiCelium Portal Engine v2.4 - Morphic Layer
+html_content = """
+<!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AiCelium Portal Engine v2.4</title>
-
-    <!-- Fonts & Styles -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AiCelium Portal Engine v2.4</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      background-color: #0f172a;
+      color: #e2e8f0;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 20px;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      width: 60%;
+    }
+    .glyph-cell {
+      background: #1e293b;
+      border: 2px solid #475569;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+    #morphic-view {
+      display: none;
+      margin-top: 20px;
+    }
+    #audit-log {
+      width: 35%;
+      background: #1e293b;
+      padding: 10px;
+      border-radius: 8px;
+      height: 600px;
+      overflow-y: scroll;
+    }
+    #axioma-input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+  </style>
 </head>
-
 <body>
-    <header>
-        <h1>AiCelium Portal Engine</h1>
-        <p>Supervisor of Resonance • Canonieke Glyph-State Edition v2.4</p>
-        <hr>
-    </header>
+  <header style="text-align:center; padding:20px;">
+    <h1>AiCelium Portal Engine</h1>
+    <p>Supervisor of Resonance • Morphic Layer v2.4</p>
+    <hr style="border-color: #334155;">
+  </header>
 
-    <div class="container">
-        <section id="control-panel">
-            <h2>Glyph Matrix</h2>
-            <div id="grid"></div>
-            <div id="morphic-view" style="display:none; margin: 20px 0;"></div>
-            <hr>
+  <div class="container">
+    <section id="control-panel">
+      <h2>Glyph Matrix</h2>
+      <div id="grid"></div>
+      <div id="morphic-view"></div>
 
-            <h2>Kernstatus</h2>
-            <div id="core-status">GELOCKT</div>
+      <hr>
+      <h2>Kernstatus</h2>
+      <div id="core-status">GELOCKT</div>
 
-            <div id="synapse-info">
-                <p id="synapse-content">Gebruik <strong>salute</strong> om veld te openen (MOD-73).</p>
-            </div>
+      <div id="synapse-info">
+        <p id="synapse-content">Gebruik <strong>salute</strong> om veld te openen (MOD-73).</p>
+      </div>
 
-            <hr>
-            <label for="axioma-input">Axioma Puls / Herstelcode:</label><br>
-            <input type="text" id="axioma-input" placeholder="salute of recovery code" onchange="handleAxiomaUnlock(this.value)">
-        </section>
+      <label for="axioma-input">Axioma Puls / Herstelcode:</label>
+      <input type="text" id="axioma-input" placeholder="Typ 'salute' of 'morph'" onchange="handleAxiomaUnlock(this.value)" />
+    </section>
 
-        <section id="audit-log">
-            <h2>Audit Interpretatie (C9.01)</h2>
-            <ul id="audit-feed"></ul>
-        </section>
-    </div>
+    <section id="audit-log">
+      <h2>Audit Interpretatie (C9)</h2>
+      <ul id="audit-feed"></ul>
+    </section>
+  </div>
 
-    <!-- Engine Loader -->
-    <script src="engine.js"></script>
+  <script src="engine.js"></script>
 </body>
 </html>
 """
 
-# Schrijf het bestand weg
+# Write the HTML content to a file named index.html
+output_path = Path("/mnt/data/index.html")
 output_path.write_text(html_content, encoding="utf-8")
 output_path.name
-
