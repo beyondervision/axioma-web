@@ -1,98 +1,72 @@
-from pathlib import Path
-
-# HTML content for the AiCelium Portal Engine v2.4 - Morphic Layer
-html_content = """
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AiCelium Portal Engine v2.4</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8">
+  <title>AiCelium Portal Engine · v2.4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
   <style>
-    body {
-      background-color: #0f172a;
-      color: #e2e8f0;
-      font-family: 'Orbitron', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      padding: 20px;
-    }
-    #grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 10px;
-      width: 60%;
-    }
     .glyph-cell {
-      background: #1e293b;
-      border: 2px solid #475569;
-      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 500;
+      background-color: #1b1f27;
+      border: 1px solid #334155;
+      padding: 2px;
       text-align: center;
+      color: #cbd5e1;
       cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
     }
+
     #morphic-view {
       display: none;
-      margin-top: 20px;
-    }
-    #audit-log {
-      width: 35%;
-      background: #1e293b;
-      padding: 10px;
-      border-radius: 8px;
-      height: 600px;
-      overflow-y: scroll;
-    }
-    #axioma-input {
       width: 100%;
+      background: #0f172a;
       padding: 10px;
-      font-size: 16px;
-      margin-top: 10px;
+      border: 1px solid #334155;
     }
   </style>
 </head>
 <body>
-  <header style="text-align:center; padding:20px;">
-    <h1>AiCelium Portal Engine</h1>
-    <p>Supervisor of Resonance • Morphic Layer v2.4</p>
-    <hr style="border-color: #334155;">
-  </header>
+  <h2>AiCelium Portal Engine</h2>
+  <div id="core-status">GELOCKT</div>
 
-  <div class="container">
-    <section id="control-panel">
-      <h2>Glyph Matrix</h2>
-      <div id="grid"></div>
-      <div id="morphic-view"></div>
+  <!-- Glyph Matrix -->
+  <div id="grid"></div>
 
-      <hr>
-      <h2>Kernstatus</h2>
-      <div id="core-status">GELOCKT</div>
+  <!-- Morphic SVG View -->
+  <div id="morphic-view"></div>
 
-      <div id="synapse-info">
-        <p id="synapse-content">Gebruik <strong>salute</strong> om veld te openen (MOD-73).</p>
-      </div>
-
-      <label for="axioma-input">Axioma Puls / Herstelcode:</label>
-      <input type="text" id="axioma-input" placeholder="Typ 'salute' of 'morph'" onchange="handleAxiomaUnlock(this.value)" />
-    </section>
-
-    <section id="audit-log">
-      <h2>Audit Interpretatie (C9)</h2>
-      <ul id="audit-feed"></ul>
-    </section>
+  <div id="synapse-info">
+    <strong>Synapse:</strong>
+    <div id="synapse-content">Gebruik salute om veld te openen (MOD-73).</div>
   </div>
 
+  <!-- Axioma Input -->
+  <div id="control-panel">
+    <label for="axioma-input">Axioma Puls / Herstelcode:</label>
+    <input id="axioma-input" type="text" placeholder="Typ bijv. salute of morph" onchange="handleAxiomaUnlock(this.value)">
+  </div>
+
+  <!-- Audit Log Feed -->
+  <div id="audit-log">
+    <h3>Audit Interpretatie (C9)</h3>
+    <ul id="audit-feed"></ul>
+  </div>
+
+  <!-- BVA Watermark -->
+  <div id="bva-watermark">
+    <div class="glyph-c">C</div>
+  </div>
+
+  <!-- Script -->
   <script src="engine.js"></script>
 </body>
 </html>
-"""
-
-# Write the HTML content to a file named index.html
-output_path = Path("/mnt/data/index.html")
-output_path.write_text(html_content, encoding="utf-8")
-output_path.name
