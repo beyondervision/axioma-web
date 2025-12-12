@@ -10,7 +10,7 @@
     --panel-border: #1e293b;
     --text: #e2e8f0;
     --line: #00eaff;    /* Cyaan gloei */
-    --accent: #facc15;  /* Goud */
+    --accent: #facc15; /* Goud */
     --critical: #9333ea; /* Amethist */
 }
 
@@ -44,12 +44,12 @@ body {
 }
 
 .glyph-cell {
-    /* 🔑 FIX 1: Dwingt een vierkant af voor uniforme grootte */
+    /* FIX 1: Dwingt een vierkant af voor uniforme grootte */
     aspect-ratio: 1 / 1; 
     min-width: 50px;
     min-height: 50px;
 
-    /* 🔑 FIX 2: Centreert de tekst en zorgt voor verticale stapeling */
+    /* FIX 2: Centreert de tekst en zorgt voor verticale stapeling */
     display: flex; 
     flex-direction: column;
     justify-content: space-around;
@@ -58,14 +58,14 @@ body {
     font-size: 0.8rem;
     font-family: 'Orbitron', sans-serif;
 
-    background: #1e293b; /* Fallback Grijs (nog steeds grijs fout) */
+    background: #1e293b; /* Fallback Grijs */
     border: 1px solid #334155;
     text-align: center;
     color: #cbd5e1;
     cursor: pointer;
     border-radius: 8px;
     transition: background .5s, box-shadow .5s, filter .5s;
-    filter: grayscale(1);
+    /* filter: grayscale(1); staat hier, wordt opgeheven door .mod73-active */
 }
 
 .glyph-cell:hover {
@@ -85,7 +85,21 @@ body {
 }
 
 /* ----------------------------------------------------------
-   CLUSTER COLORS (VIVID MODE) — MOETEN WERKEN!
+   CLUSTER COLORS (VIVID MODE) — VOLLEDIG GEFIXTE DEFINITIES
 -----------------------------------------------------------*/
 
-.c1 { background-color: #0ea5e9; border-color:
+.c1 { background-color: #0ea5e9 !important; border-color: #38bdf8 !important; } /* Blauw */
+.c2 { background-color: #ca8a04 !important; border-color: #facc15 !important; } /* Geel/Goud */
+.c3 { background-color: #16a34a !important; border-color: #22c55e !important; } /* Groen */
+.c4 { background-color: #7c3aed !important; border-color: #a855f7 !important; } /* Paars/Motor-Triade */
+.c5 { background-color: #ea580c !important; border-color: #f97316 !important; } /* Oranje */
+.c6 { background-color: #0891b2 !important; border-color: #06b6d4 !important; } /* Cyaan */
+.c7 { background-color: #16a34a !important; border-color: #22c55e !important; } /* Groen (Pulse-Chain) */
+.c8 { background-color: #ca8a04 !important; border-color: #facc15 !important; } /* Geel/Goud (Semantisch-Veld) */
+.c9 { background-color: #c2410c !important; border-color: #ef4444 !important; } /* Rood (Autonomie-Circuit) */
+
+
+/* Activering van Vivid Mode op de Matrix */
+.mod73-active .glyph-cell {
+    filter: grayscale(0) !important; /* Kleur is nu 100% zichtbaar */
+}
