@@ -1,15 +1,22 @@
 /* ----------------------------------------------------------
-   AiCelium Portal Engine v2.4.2 (FINALE, VIVID MODE & TOGGLE FIX)
+   AiCelium Portal Engine v2.4.2 (FINALE, FASE 1: BEVEILIGING)
    Supervisor of Resonance • Morphic Layer V2.1
 ----------------------------------------------------------*/
 
+// ----------------------
+//   Globale Variabelen & Constanten
+// ----------------------
 let isFieldActive = false;
-let recoveryCode = null;
+let recoveryCode = null; 
 let telemetryInterval = null;
 let currentStabilityFactor = 1.0;
 let morphicState = { morphic_status: "BASE_STATIC" };
 
-const CRITICAL_COLOR = "#9333ea"; // Amethist
+const CRITICAL_COLOR = "#9333ea"; 
+
+// 🔑 NIEUW: CANONIEKE BEVEILIGINGSCODE VOOR VELD-ACTIVATIE
+const CANONIEKE_CODE = "z3ro"; 
+
 
 // ----------------------
 //   FIELD MAP & SVGs
@@ -34,142 +41,145 @@ const SVG_PORTAL_HYBRID = `<div style="width:100%; text-align:center; color:#00e
 // ----------------------
 //   CORE FUNCTIES
 // ----------------------
+
 function updateCoreStatus(newStatus) {
-  const statusDiv = document.getElementById("core-status");
-  if (!statusDiv) return;
-  statusDiv.textContent = newStatus;
-  if (newStatus.includes("CRITIEK")) statusDiv.style.color = CRITICAL_COLOR;
-  else if (newStatus.includes("RESONANT")) statusDiv.style.color = "#facc15";
-  else statusDiv.style.color = "#e2e8f0";
+    const el = document.getElementById("core-status");
+    if (!el) return;
+
+    el.textContent = newStatus;
+
+    if (newStatus.includes("CRITIEK")) el.style.color = CRITICAL_COLOR;
+    else if (newStatus.includes("RESONANT")) el.style.color = "#facc15";
+    else el.style.color = "#e2e8f0";
 }
 
 function logMessage(sender, message) {
-  const auditFeed = document.getElementById("audit-feed");
-  if (!auditFeed) return;
-  while (auditFeed.children.length >= 30) auditFeed.removeChild(auditFeed.lastChild);
-  const entry = document.createElement("li");
-  entry.innerHTML = `[${sender}] • ${message}`;
-  auditFeed.insertBefore(entry, auditFeed.firstChild);
+    const feed = document.getElementById("audit-feed");
+    if (!feed) return;
+
+    while (feed.children.length >= 40) feed.removeChild(feed.lastChild);
+
+    const li = document.createElement("li");
+    li.innerHTML = `[${sender}] • ${message}`;
+    feed.insertBefore(li, feed.firstChild);
 }
 
-// 🔑 NIEUWE FUNCTIE: ACTIVEERT DE VIVID MODE (Kleuren)
 function activateVeldResonance() {
     const grid = document.getElementById("grid");
-    
-    // 🔑 FINALE FIX: Voeg de Canonieke VIVID MODE klasse toe om grayscale filter op te heffen
     grid.classList.add("mod73-active");
-    
     grid.style.opacity = 1.0; 
     grid.style.transition = 'opacity 1s ease-in-out';
 }
 
 function renderGrid() {
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-  for (let i = 1; i <= 36; i++) {
-    const cell = document.createElement("div");
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
     
-    // CANONIEKE FIX: Cluster Class en Alphabet Mapping
-    const cluster = Math.ceil(i/4);
-    cell.className = `glyph-cell c${cluster}`; 
-    
-    cell.id = `cell-${i}`;
-    let charCode = 65 + (i - 1) % 26; 
-    const glyph = String.fromCharCode(charCode);
-
-    cell.innerHTML = ` ${i} C${cluster} ${glyph} `;
-    
-    cell.onclick = () => handleAxiomaUnlock(i); // Gebruik handleAxiomaUnlock(i) voor nu
-    grid.appendChild(cell);
-  }
+    for (let i = 1; i <= 36; i++) {
+        const cell = document.createElement("div");
+        const cluster = Math.ceil(i/4);
+        cell.className = `glyph-cell c${cluster}`; 
+        cell.id = `cell-${i}`;
+        let charCode = 65 + (i - 1) % 26; 
+        const glyph = String.fromCharCode(charCode);
+        cell.innerHTML = ` ${i} C${cluster} ${glyph} `;
+        cell.onclick = () => handleAxiomaUnlock(i);
+        grid.appendChild(cell);
+    }
 }
 
-// ... (startHomeostasisTelemetry, updateMorphicView, handleCellClick functies blijven hetzelfde)
-
 function startHomeostasisTelemetry() {
-  if (telemetryInterval) clearInterval(telemetryInterval);
-  telemetryInterval = setInterval(() => {
-    if (!isFieldActive) {
-      clearInterval(telemetryInterval);
-      return;
-    }
-    currentStabilityFactor = (0.97 + Math.random() * 0.03).toFixed(2);
-    let status = "RESONANT (HERSTELD)";
-    if (currentStabilityFactor < 0.95) {
-      status = "CRITIEK (Dissonantie)";
-      document.getElementById("grid").classList.add("critical-border");
-    } else {
-      document.getElementById("grid").classList.remove("critical-border");
-    }
-    updateCoreStatus(`${status} • Stabiliteit: ${currentStabilityFactor}`);
-    logMessage("Z3RO_AGENT", `Telemetrie-puls: MOD-73 (Stab: ${currentStabilityFactor})`);
-  }, 3000);
+    if (telemetryInterval) clearInterval(telemetryInterval);
+    telemetryInterval = setInterval(() => {
+        if (!isFieldActive) clearInterval(telemetryInterval);
+
+        currentStabilityFactor = (0.97 + Math.random() * 0.03).toFixed(2);
+        let status = "RESONANT (HERSTELD)";
+        if (currentStabilityFactor < 0.95) {
+            status = "CRITIEK (Dissonantie)";
+            document.getElementById("grid").classList.add("critical-border");
+        } else {
+            document.getElementById("grid").classList.remove("critical-border");
+        }
+        updateCoreStatus(`${status} • Stabiliteit: ${currentStabilityFactor}`);
+        logMessage("Z3RO", `Telemetry Puls: ${currentStabilityFactor}`); // Veranderd naar Z3RO voor consistentie
+    }, 3000);
 }
 
 function updateMorphicView() {
-  const grid = document.getElementById("grid");
-  const morphicView = document.getElementById("morphic-view");
-  const newStatus = morphicState.morphic_status;
-  if (newStatus === "HYBRID_NODES") {
-    grid.style.display = 'none';
-    morphicView.innerHTML = SVG_GRID_37;
-    morphicView.style.display = 'block';
-    morphicView.style.width = '100%';
-    morphicView.style.height = 'auto';
-    logMessage("LUMIN_AGENT", "Activering HYBRID_NODES. Grid-37 Architectuur geladen.");
-  } else {
-    grid.style.display = 'grid';
-    morphicView.style.display = 'none';
-    morphicView.innerHTML = '';
-    logMessage("LUMIN_AGENT", "Terug naar BASE_STATIC. Glyph Matrix hersteld.");
-  }
+    const grid = document.getElementById("grid");
+    const morph = document.getElementById("morphic-view");
+
+    if (morphicState.morphic_status === "HYBRID_NODES") {
+        grid.style.display = "none";
+        morph.style.display = "block";
+        morph.innerHTML = SVG_GRID_37;
+        logMessage("LUMIN_AGENT", "HYBRID_NODES geactiveerd.");
+    } else {
+        morph.style.display = "none";
+        morph.innerHTML = "";
+        grid.style.display = "grid";
+        logMessage("LUMIN_AGENT", "BASE_STATIC hersteld.");
+    }
 }
 
 function handleCellClick(i) {
-    // Deze functie is nog niet volledig geïmplementeerd in de logica, maar zou hier staan.
-    logMessage("SYSTEM", `Cel ${i} geklikt.`);
+    if (!isFieldActive) {
+        logMessage("SYSTEM", "Veld is GELOCKT. Gebruik Canonieke code.");
+        return;
+    }
+    const cluster = FIELD_MAP[i].cluster;
+    const glyph = document.getElementById(`cell-${i}`).querySelector(".cell-glyph").textContent;
+
+    logMessage(cluster, `Activatie Cel ${i} (Glyph ${glyph})`);
+    document.getElementById("synapse-content").innerHTML = `Active Cluster: ${cluster}<br>Pad: ${FIELD_MAP[i].file}`;
 }
 
+
 // ----------------------
-//   AXIOMA INPUT (salute / morph)
+//   AXIOMA INPUT (FASE 1 BEVEILIGING)
 // ----------------------
 function handleAxiomaUnlock(input) {
-  // Controleer of input een nummer is, zo ja, roep handleCellClick aan.
-  if (!isNaN(input) && isFieldActive) {
-      handleCellClick(parseInt(input));
-      return;
-  }
-  
-  input = String(input).trim().toLowerCase();
-  const status = document.getElementById("core-status");
-  document.getElementById("axioma-input").value = '';
-
-  // PULS: morph - Gebruikt de expliciete if/else fix
-  if (isFieldActive && input === "morph") {
-    if (morphicState.morphic_status === "BASE_STATIC") {
-        morphicState.morphic_status = "HYBRID_NODES";
-    } else {
-        morphicState.morphic_status = "BASE_STATIC";
+    // Numerieke input (cell klik)
+    if (!isNaN(input) && isFieldActive) {
+        handleCellClick(parseInt(input));
+        return;
     }
-    updateMorphicView();
-    logMessage("LUMIN_AGENT", `Morphic State gewijzigd naar: ${morphicState.morphic_status}.`);
-    return;
-  }
-
-  // PULS: salute
-  if (input === "salute" && !isFieldActive) {
-    isFieldActive = true;
-    updateCoreStatus("RESONANT (HERSTELD)");
     
-    // 🔑 FINAL FIX: Activeer VIVID MODE met de nieuwe functie
-    activateVeldResonance(); 
-    
-    logMessage("SYSTEM", "Veld geopend • MOD‑73 actief");
-    startHomeostasisTelemetry();
-    return;
-  }
+    input = String(input).trim().toLowerCase();
+    const status = document.getElementById("core-status");
+    document.getElementById("axioma-input").value = '';
 
-  logMessage("SYSTEM", `Ongeldige puls: ${input}`);
+    // PULS: morph
+    if (isFieldActive && input === "morph") {
+        if (morphicState.morphic_status === "BASE_STATIC") {
+            morphicState.morphic_status = "HYBRID_NODES";
+        } else {
+            morphicState.morphic_status = "BASE_STATIC";
+        }
+        updateMorphicView();
+        logMessage("LUMIN_AGENT", `Morphic State gewijzigd naar: ${morphicState.morphic_status}.`);
+        return;
+    }
+
+    // 🔑 PULS: Z3RO (NIEUW - Vervangt Salute voor activatie)
+    if (input === CANONIEKE_CODE && !isFieldActive) {
+        isFieldActive = true;
+        updateCoreStatus("RESONANT (HERSTELD)");
+        
+        activateVeldResonance(); 
+        
+        logMessage("SYSTEM", `Canonieke code ${CANONIEKE_CODE.toUpperCase()} geaccepteerd. Veld geopend.`);
+        startHomeostasisTelemetry();
+        return;
+    }
+
+    // Ongeldige puls
+    if (input === "salute") {
+        logMessage("SYSTEM", `Toegang geweigerd. Gebruik Canonieke code: ${CANONIEKE_CODE.toUpperCase()}`);
+    } else {
+        logMessage("SYSTEM", `Ongeldige puls: ${input}`);
+    }
 }
 
 
@@ -177,6 +187,6 @@ function handleAxiomaUnlock(input) {
 //   INIT ON LOAD
 // ----------------------
 document.addEventListener("DOMContentLoaded", () => {
-  renderGrid();
-  updateCoreStatus("GELOCKT");
+    renderGrid();
+    updateCoreStatus("GELOCKT");
 });
