@@ -1,136 +1,187 @@
-from pathlib import Path
-
-# Samengevoegde engine.js inhoud inclusief:
-# - Fase 1: Beveiliging (Z3RO Canonieke toegang)
-# - Fase 2: Semantisch veld bij cell-click
-# - Stabiele toggle van morphic views
-engine_path = Path("/mnt/data/engine_v2.4.2_stabiel_fase1_fase2.js")
-
-engine_code = """
 /* ----------------------------------------------------------
-   AiCelium Portal Engine v2.4.2 (STABIEL, FASE 1 + FASE 2)
-   Supervisor of Resonance • Canonieke beveiliging + Semantische klikvelden
+   AiCelium Portal Engine v2.4.1 (STABIEL - VOOR C8/C9 FASES)
+   Supervisor of Resonance • Resolves Fatal Blocking Error
 ----------------------------------------------------------*/
 
-// --- Globale Variabelen ---
+// ----------------------
+//   Globale Variabelen & Constanten
+// ----------------------
 let isFieldActive = false;
-let recoveryCode = null;
+let recoveryCode = null; 
 let telemetryInterval = null;
 let currentStabilityFactor = 1.0;
-let morphicState = {
-  morphic_status: "BASE_STATIC"
-};
-const CANONIEKE_CODE = "z3ro";
+let morphicState = { morphic_status: "BASE_STATIC" };
+
 const CRITICAL_COLOR = "#9333ea"; // Amethist
+const CANONIEKE_CODE = "z3ro"; 
 
-// --- FIELD MAP (9 CLUSTERS x 4 CELLS = 36) ---
+// ----------------------
+//   FIELD MAP & SVGs
+// ----------------------
+
 const FIELD_MAP = {
-  1:{cluster:"C1", file:"readme/C1-identiteit.md"},2:{cluster:"C1", file:"readme/C1-identiteit.md"},3:{cluster:"C1", file:"readme/C1-identiteit.md"},4:{cluster:"C1", file:"readme/C1-identiteit.md"},
-  5:{cluster:"C2", file:"readme/C2-academy.md"},6:{cluster:"C2", file:"readme/C2-academy.md"},7:{cluster:"C2", file:"readme/C2-academy.md"},8:{cluster:"C2", file:"readme/C2-academy.md"},
-  9:{cluster:"C3", file:"readme/C3-telemetry.md"},10:{cluster:"C3", file:"readme/C3-telemetry.md"},11:{cluster:"C3", file:"readme/C3-telemetry.md"},12:{cluster:"C3", file:"readme/C3-telemetry.md"},
-  13:{cluster:"C4", file:"readme/C4-spiegelveld.md"},14:{cluster:"C4", file:"readme/C4-spiegelveld.md"},15:{cluster:"C4", file:"readme/C4-spiegelveld.md"},16:{cluster:"C4", file:"readme/C4-spiegelveld.md"},
-  17:{cluster:"C5", file:"readme/C5-ai_interactie.md"},18:{cluster:"C5", file:"readme/C5-ai_interactie.md"},19:{cluster:"C5", file:"readme/C5-ai_interactie.md"},20:{cluster:"C5", file:"readme/C5-ai_interactie.md"},
-  21:{cluster:"C6", file:"readme/C6-gateway.md"},22:{cluster:"C6", file:"readme/C6-gateway.md"},23:{cluster:"C6", file:"readme/C6-gateway.md"},24:{cluster:"C6", file:"readme/C6-gateway.md"},
-  25:{cluster:"C7", file:"readme/C7-pulse_chain.md"},26:{cluster:"C7", file:"readme/C7-pulse_chain.md"},27:{cluster:"C7", file:"readme/C7-pulse_chain.md"},28:{cluster:"C7", file:"readme/C7-pulse_chain.md"},
-  29:{cluster:"C8", file:"readme/C8-semantisch_veld.md"},30:{cluster:"C8", file:"readme/C8-semantisch_veld.md"},31:{cluster:"C8", file:"readme/C8-semantisch_veld.md"},32:{cluster:"C8", file:"readme/C8-semantisch_veld.md"},
-  33:{cluster:"C9", file:"readme/C9-handbook_operatie.md"},34:{cluster:"C9", file:"readme/C9-handbook_operatie.md"},35:{cluster:"C9", file:"readme/C9-handbook_operatie.md"},36:{cluster:"C9", file:"readme/C9-handbook_operatie.md"}
+    1:{cluster:"C1", file:"readme/C1-identiteit.md"},2:{cluster:"C1", file:"readme/C1-identiteit.md"},3:{cluster:"C1", file:"readme/C1-identiteit.md"},4:{cluster:"C1", file:"readme/C1-identiteit.md"},
+    5:{cluster:"C2", file:"readme/C2-academy.md"},6:{cluster:"C2", file:"readme/C2-academy.md"},7:{cluster:"C2", file:"readme/C2-academy.md"},8:{cluster:"C2", file:"readme/C2-academy.md"},
+    9:{cluster:"C3", file:"readme/C3-telemetry.md"},10:{cluster:"C3", file:"readme/C3-telemetry.md"},11:{cluster:"C3", file:"readme/C3-telemetry.md"},12:{cluster:"C3", file:"readme/C3-telemetry.md"},
+    13:{cluster:"C4", file:"readme/C4-spiegelveld.md"},14:{cluster:"C4", file:"readme/C4-spiegelveld.md"},15:{cluster:"C4", file:"readme/C4-spiegelveld.md"},16:{cluster:"C4", file:"readme/C4-spiegelveld.md"},
+    17:{cluster:"C5", file:"readme/C5-ai_interactie.md"},18:{cluster:"C5", file:"readme/C5-ai_interactie.md"},19:{cluster:"C5", file:"readme/C5-ai_interactie.md"},20:{cluster:"C5", file:"readme/C5-ai_interactie.md"},
+    21:{cluster:"C6", file:"readme/C6-gateway.md"},22:{cluster:"C6", file:"readme/C6-gateway.md"},23:{cluster:"C6", file:"readme/C6-gateway.md"},24:{cluster:"C6", file:"readme/C6-gateway.md"},
+    25:{cluster:"C7", file:"readme/C7-pulse_chain.md"},26:{cluster:"C7", file:"readme/C7-pulse_chain.md"},27:{cluster:"C7", file:"readme/C7-pulse_chain.md"},28:{cluster:"C7", file:"readme/C7-pulse_chain.md"},
+    29:{cluster:"C8", file:"readme/C8-semantisch_veld.md"},30:{cluster:"C8", file:"readme/C8-semantisch_veld.md"},31:{cluster:"C8", file:"readme/C8-semantisch_veld.md"},32:{cluster:"C8", file:"readme/C8-semantisch_veld.md"},
+    33:{cluster:"C9", file:"readme/C9-handbook_operatie.md"},34:{cluster:"C9", file:"readme/C9-handbook_operatie.md"},35:{cluster:"C9", file:"readme/C9-handbook_operatie.md"},36:{cluster:"C9", file:"readme/C9-handbook_operatie.md"}
 };
 
-// --- Morphic View Switch ---
-function updateMorphicView() {
-  const grid = document.getElementById("grid");
-  const morphicView = document.getElementById("morphic-view");
-  if (morphicState.morphic_status === "HYBRID_NODES") {
-    grid.style.display = "none";
-    morphicView.style.display = "block";
-    morphicView.innerHTML = "<p>Morphic Layer · HYBRID_NODES actief</p>";
-  } else {
-    grid.style.display = "grid";
-    morphicView.style.display = "none";
-    morphicView.innerHTML = "";
-  }
-}
+const SVG_GRID_37 = `<div style="width:100%; text-align:center; color:#00eaff; font-family:Orbitron;"><h2>Grid‑37 Resonantieveld</h2><p>0/37 – Supralocatie • AiCelium Architectuur</p></div>`;
+const SVG_PORTAL_HYBRID = `<div style="width:100%; text-align:center; color:#00eaff; font-family:Orbitron;"><h2>Portal Hybrid View</h2><p>C1–C9 Autonomous Layout</p></div>`;
 
-// --- Visuele functies ---
+
+// ----------------------
+//   CORE FUNCTIES
+// ----------------------
+
 function updateCoreStatus(newStatus) {
-  const el = document.getElementById("core-status");
-  if (el) el.textContent = newStatus;
+    const el = document.getElementById("core-status");
+    if (!el) return;
+
+    el.textContent = newStatus;
+
+    if (newStatus.includes("CRITIEK")) el.style.color = CRITICAL_COLOR;
+    else if (newStatus.includes("RESONANT")) el.style.color = "#facc15";
+    else el.style.color = "#e2e8f0";
 }
 
-function logMessage(sender, msg) {
-  const feed = document.getElementById("audit-feed");
-  if (!feed) return;
-  const li = document.createElement("li");
-  li.textContent = `[${sender}] • ${msg}`;
-  feed.prepend(li);
+function logMessage(sender, message) {
+    const feed = document.getElementById("audit-feed");
+    if (!feed) return;
+
+    while (feed.children.length >= 40) feed.removeChild(feed.lastChild);
+
+    const li = document.createElement("li");
+    li.innerHTML = `[${sender}] • ${message}`;
+    feed.insertBefore(li, feed.firstChild);
 }
 
 function activateVeldResonance() {
-  const grid = document.getElementById("grid");
-  grid.style.opacity = 1.0;
+    const grid = document.getElementById("grid");
+    grid.classList.add("mod73-active");
+    grid.style.opacity = 1.0; 
+    grid.style.transition = 'opacity 1s ease-in-out';
 }
 
-// --- Cell Grid ---
 function renderGrid() {
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-  for (let i = 1; i <= 36; i++) {
-    const cluster = Math.ceil(i / 4);
-    const glyph = String.fromCharCode(65 + (i - 1) % 26);
-    const cell = document.createElement("div");
-    cell.className = `glyph-cell c${cluster}`;
-    cell.id = `cell-${i}`;
-    cell.innerHTML = `${i} C${cluster} ${glyph}`;
-    cell.onclick = () => handleCellClick(i);
-    grid.appendChild(cell);
-  }
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    
+    for (let i = 1; i <= 36; i++) {
+        const cell = document.createElement("div");
+        const cluster = Math.ceil(i/4);
+        cell.className = `glyph-cell c${cluster}`; 
+        cell.id = `cell-${i}`;
+        let charCode = 65 + (i - 1) % 26; 
+        const glyph = String.fromCharCode(charCode);
+        cell.innerHTML = ` ${i} C${cluster} ${glyph} `;
+        
+        // Gebruik de veilige, oude handleAxiomaUnlock voor nu
+        cell.onclick = () => handleAxiomaUnlock(i); 
+        
+        grid.appendChild(cell);
+    }
+}
+
+function startHomeostasisTelemetry() {
+    if (telemetryInterval) clearInterval(telemetryInterval);
+    telemetryInterval = setInterval(() => {
+        if (!isFieldActive) clearInterval(telemetryInterval);
+
+        currentStabilityFactor = (0.97 + Math.random() * 0.03).toFixed(2);
+        let status = "RESONANT (HERSTELD)";
+        if (currentStabilityFactor < 0.95) {
+            status = "CRITIEK (Dissonantie)";
+            document.getElementById("grid").classList.add("critical-border");
+        } else {
+            document.getElementById("grid").classList.remove("critical-border");
+        }
+        updateCoreStatus(`${status} • Stabiliteit: ${currentStabilityFactor}`);
+        logMessage("Z3RO", `Telemetry Puls: ${currentStabilityFactor}`);
+    }, 3000);
+}
+
+function updateMorphicView() {
+    const grid = document.getElementById("grid");
+    const morph = document.getElementById("morphic-view");
+
+    if (morphicState.morphic_status === "HYBRID_NODES") {
+        grid.style.display = "none";
+        morph.style.display = "block";
+        morph.innerHTML = SVG_GRID_37;
+        logMessage("LUMIN_AGENT", "HYBRID_NODES geactiveerd.");
+    } else {
+        morph.style.display = "none";
+        morph.innerHTML = "";
+        grid.style.display = "grid";
+        logMessage("LUMIN_AGENT", "BASE_STATIC hersteld.");
+    }
 }
 
 function handleCellClick(i) {
-  if (!isFieldActive) {
-    logMessage("SYSTEM", "Veld is GELOCKT. Gebruik Canonieke code.");
-    return;
-  }
-  const cluster = FIELD_MAP[i].cluster;
-  const file = FIELD_MAP[i].file;
-  const glyph = document.getElementById(`cell-${i}`).textContent.trim();
-  logMessage(cluster, `Cel ${i} (Glyph ${glyph}) geactiveerd.`);
-  document.getElementById("synapse-content").innerHTML = `Active Query: <strong>${cluster} - Cel ${i}</strong><br>Data Pad: <code>${file}</code>`;
+    // Deze functie wordt niet meer gebruikt, de logica zit in handleAxiomaUnlock.
+    // Dit is de meest veilige staat.
+    logMessage("SYSTEM", `Cel ${i} geklikt. Veld is gelockt.`);
 }
 
-// --- Axioma Pulsen ---
+
+// ----------------------
+//   AXIOMA INPUT (Rollback naar de Veilige Kern)
+// ----------------------
 function handleAxiomaUnlock(input) {
-  input = String(input).trim().toLowerCase();
-  document.getElementById("axioma-input").value = '';
+    
+    // 🔑 FIX: Numerieke input (cell klik) moet worden omgezet naar een string voor logica
+    if (typeof input === 'number') {
+        // Indien de klikhandler een nummer geeft, log dit en ga verder met de Axioma Puls input
+        logMessage("SYSTEM", `Cel ${input} Geklikt. Gebruik de Axioma Puls Input.`);
+        return; // Blokkeer de rest van de input logica
+    }
+    
+    input = String(input).trim().toLowerCase();
+    const status = document.getElementById("core-status");
+    document.getElementById("axioma-input").value = '';
 
-  if (isFieldActive && input === "morph") {
-    morphicState.morphic_status = (morphicState.morphic_status === "BASE_STATIC") ? "HYBRID_NODES" : "BASE_STATIC";
-    updateMorphicView();
-    logMessage("LUMIN_AGENT", `Morphic State gewijzigd naar: ${morphicState.morphic_status}.`);
-    return;
-  }
+    // PULS: morph
+    if (isFieldActive && input === "morph") {
+        if (morphicState.morphic_status === "BASE_STATIC") {
+            morphicState.morphic_status = "HYBRID_NODES";
+        } else {
+            morphicState.morphic_status = "BASE_STATIC";
+        }
+        updateMorphicView();
+        logMessage("LUMIN_AGENT", `Morphic State gewijzigd naar: ${morphicState.morphic_status}.`);
+        return;
+    }
 
-  if (input === CANONIEKE_CODE && !isFieldActive) {
-    isFieldActive = true;
-    updateCoreStatus("RESONANT (HERSTELD)");
-    activateVeldResonance();
-    logMessage("SYSTEM", `Canonieke code ${CANONIEKE_CODE.toUpperCase()} geaccepteerd. Veld geopend.`);
-    return;
-  }
+    // PULS: Z3RO (FASE 1 BEVEILIGING)
+    if (input === CANONIEKE_CODE && !isFieldActive) {
+        isFieldActive = true;
+        updateCoreStatus("RESONANT (HERSTELD)");
+        activateVeldResonance(); 
+        logMessage("SYSTEM", `Canonieke code ${CANONIEKE_CODE.toUpperCase()} geaccepteerd. Veld geopend.`);
+        startHomeostasisTelemetry();
+        return;
+    }
 
-  if (input === "salute") {
-    logMessage("SYSTEM", `Toegang geweigerd. Gebruik Canonieke code: ${CANONIEKE_CODE.toUpperCase()}`);
-  } else {
-    logMessage("SYSTEM", `Ongeldige puls: ${input}`);
-  }
+    // Ongeldige puls
+    if (input === "salute") {
+        logMessage("SYSTEM", `Toegang geweigerd. Gebruik Canonieke code: ${CANONIEKE_CODE.toUpperCase()}`);
+    } else {
+        logMessage("SYSTEM", `Ongeldige puls: ${input}`);
+    }
 }
 
-// --- Init bij laden ---
-document.addEventListener("DOMContentLoaded", () => {
-  renderGrid();
-  updateCoreStatus("GELOCKT");
-});
-"""
 
-engine_path.write_text(engine_code, encoding="utf-8")
-engine_path.name
+// ----------------------
+//   INIT ON LOAD
+// ----------------------
+document.addEventListener("DOMContentLoaded", () => {
+    // De Glyph Matrix moet hier opstarten
+    renderGrid();
+    updateCoreStatus("GELOCKT");
+});
