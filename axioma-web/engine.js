@@ -1,24 +1,20 @@
 /* ----------------------------------------------------------
-   AiCelium Portal Engine v2.4.2 (VEILIGE KERN STABILISATIE)
-   Supervisor of Resonance • Resolves Fatal Blocking Error
+   AiCelium Portal Engine v2.4.2 (FINALE, VEILIGE KERN STABILISATIE)
+   Supervisor of Resonance • Resolves Fatal Syntax Blocking Error
 ----------------------------------------------------------*/
 
 // ----------------------
 //   Globale Variabelen & Constanten
 // ----------------------
-let isFieldActive = false;
-let recoveryCode = null; 
+let isFieldActive = false; 
 let telemetryInterval = null;
 let currentStabilityFactor = 1.0;
 let morphicState = { morphic_status: "BASE_STATIC" };
 
 const CRITICAL_COLOR = "#9333ea"; // Amethist
 const CANONIEKE_CODE = "z3ro"; 
-
-// ----------------------
-//   FIELD MAP & SVGs
-// ----------------------
 const FIELD_MAP = {
+    // ... (volledige FIELD_MAP, niet ingekort voor veiligheid) ...
     1:{cluster:"C1", file:"readme/C1-identiteit.md"},2:{cluster:"C1", file:"readme/C1-identiteit.md"},3:{cluster:"C1", file:"readme/C1-identiteit.md"},4:{cluster:"C1", file:"readme/C1-identiteit.md"},
     5:{cluster:"C2", file:"readme/C2-academy.md"},6:{cluster:"C2", file:"readme/C2-academy.md"},7:{cluster:"C2", file:"readme/C2-academy.md"},8:{cluster:"C2", file:"readme/C2-academy.md"},
     9:{cluster:"C3", file:"readme/C3-telemetry.md"},10:{cluster:"C3", file:"readme/C3-telemetry.md"},11:{cluster:"C3", file:"readme/C3-telemetry.md"},12:{cluster:"C3", file:"readme/C3-telemetry.md"},
@@ -29,7 +25,6 @@ const FIELD_MAP = {
     29:{cluster:"C8", file:"readme/C8-semantisch_veld.md"},30:{cluster:"C8", file:"readme/C8-semantisch_veld.md"},31:{cluster:"C8", file:"readme/C8-semantisch_veld.md"},32:{cluster:"C8", file:"readme/C8-semantisch_veld.md"},
     33:{cluster:"C9", file:"readme/C9-handbook_operatie.md"},34:{cluster:"C9", file:"readme/C9-handbook_operatie.md"},35:{cluster:"C9", file:"readme/C9-handbook_operatie.md"},36:{cluster:"C9", file:"readme/C9-handbook_operatie.md"}
 };
-
 const SVG_GRID_37 = `<div style="width:100%; text-align:center; color:#00eaff; font-family:Orbitron;"><h2>Grid‑37 Resonantieveld</h2><p>0/37 – Supralocatie • AiCelium Architectuur</p></div>`;
 const SVG_PORTAL_HYBRID = `<div style="width:100%; text-align:center; color:#00eaff; font-family:Orbitron;"><h2>Portal Hybrid View</h2><p>C1–C9 Autonomous Layout</p></div>`;
 
@@ -40,8 +35,7 @@ const SVG_PORTAL_HYBRID = `<div style="width:100%; text-align:center; color:#00e
 
 function updateCoreStatus(newStatus) {
     const el = document.getElementById("core-status");
-    if (!el) return;
-    el.textContent = newStatus;
+    if (!el) return; el.textContent = newStatus;
     if (newStatus.includes("CRITIEK")) el.style.color = CRITICAL_COLOR;
     else if (newStatus.includes("RESONANT")) el.style.color = "#facc15";
     else el.style.color = "#e2e8f0";
@@ -65,6 +59,7 @@ function activateVeldResonance() {
 
 function renderGrid() {
     const grid = document.getElementById("grid");
+    if (!grid) return; 
     grid.innerHTML = "";
     
     for (let i = 1; i <= 36; i++) {
@@ -76,7 +71,7 @@ function renderGrid() {
         const glyph = String.fromCharCode(charCode);
         cell.innerHTML = ` ${i} C${cluster} ${glyph} `;
         
-        // 🔑 ROLLBACK: Gebruik de veilige Axioma Unlock met index
+        // Veilige handler
         cell.onclick = () => handleAxiomaUnlock(i); 
         
         grid.appendChild(cell);
@@ -119,7 +114,6 @@ function updateMorphicView() {
 }
 
 function handleCellClick(i) {
-    // FASE 2 STUB: Deze logica moet hier terugkomen nadat de Engine stabiel is.
     logMessage("SYSTEM", `Cel ${i} geklikt. Query functie is tijdelijk uitgeschakeld.`);
 }
 
